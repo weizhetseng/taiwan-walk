@@ -1,10 +1,13 @@
 <script setup lang="ts">
 import countrys from '@/data/country.json'
+import { useDayjs } from '#dayjs'
+const dayjs = useDayjs()
 
 useSeoMeta({
   title: '節慶活動 - Taiwan Walk - 探索台灣景點、美食與活動'
 })
 
+const dropDownRef = ref<HTMLElement | null>(null)
 const isSelect = ref(false)
 const selected = ref<{ title: string; value: string }>({ title: '全部縣市', value: '' })
 
@@ -12,6 +15,37 @@ function handleSelect(title: string, value: string) {
   selected.value = { title, value }
   isSelect.value = !isSelect.value
 }
+
+const dateRef = ref<HTMLElement | null>(null)
+const date = ref(new Date())
+const isDate = ref(false)
+
+const defaultData = ref<string | Date>('選擇日期')
+
+function closeDorpDown(event: Event) {
+  if (dropDownRef.value && !dropDownRef.value.contains(event.target as Node)) {
+    isSelect.value = false
+  }
+  if (dateRef.value && !dateRef.value.contains(event.target as Node)) {
+    isDate.value = false
+  }
+}
+
+watch(
+  () => date.value,
+  () => {
+    isDate.value = false
+    defaultData.value = dayjs(date.value).format('YYYY/MM/DD')
+  }
+)
+
+onMounted(() => {
+  document.addEventListener('click', closeDorpDown)
+})
+
+onBeforeUnmount(() => {
+  document.removeEventListener('click', closeDorpDown)
+})
 </script>
 <template>
   <main class="pb-15 pt-6 md:pb-30 md:pt-15">
@@ -25,32 +59,55 @@ function handleSelect(title: string, value: string) {
         action=""
         class="mb-6 flex flex-col gap-4 md:mb-15 lg:flex-row"
       >
-        <div class="relative">
+        <div class="flex flex-col gap-4 sm:flex-row">
           <div
-            class="h-12.5 w-full cursor-pointer appearance-none rounded-md border border-gray_4 px-7.5 py-2.5 text-green_2 outline-green_2 lg:w-60"
-            @click="isSelect = !isSelect"
+            ref="dropDownRef"
+            class="relative w-full sm:w-1/2 lg:w-60"
           >
-            {{ selected.title }}
-          </div>
-          <ul
-            v-show="isSelect"
-            class="absolute top-full max-h-[350px] w-full translate-y-2.5 overflow-auto rounded-md border border-gray_4 bg-white pb-5 pr-5"
-          >
-            <li
-              v-for="country in countrys"
-              :key="country.title"
-              :value="country.value"
-              class="cursor-pointer border-b border-gray_1 px-7.5 py-2.5 text-green_2 hover:bg-green_2 hover:text-white"
-              @click="handleSelect(country.title, country.value)"
+            <div
+              class="after:bg-selectArrow relative h-12.5 cursor-pointer appearance-none rounded-md border border-gray_4 px-7.5 py-2.5 text-green_2 outline-green_2 after:absolute after:right-2.5 after:top-1/2 after:h-5 after:w-5 after:-translate-y-1/2 after:bg-center after:bg-no-repeat after:content-['']"
+              :class="{ 'after:rotate-180': isSelect }"
+              @click="isSelect = !isSelect"
             >
-              {{ country.title }}
-            </li>
-          </ul>
+              {{ selected.title }}
+            </div>
+            <ul
+              v-show="isSelect"
+              class="absolute top-full z-50 max-h-[350px] w-full translate-y-2.5 overflow-auto rounded-md border border-gray_4 bg-white pb-5 pr-5"
+            >
+              <li
+                v-for="country in countrys"
+                :key="country.title"
+                :value="country.value"
+                class="cursor-pointer border-b border-gray_1 px-7.5 py-2.5 text-green_2 hover:bg-green_2 hover:text-white"
+                @click="handleSelect(country.title, country.value)"
+              >
+                {{ country.title }}
+              </li>
+            </ul>
+          </div>
+          <div
+            ref="dateRef"
+            class="relative w-full sm:w-1/2 lg:w-60"
+          >
+            <div
+              class="bg-datepicker flex h-12.5 items-center rounded-md border border-gray_4 bg-[right_10px_center] bg-no-repeat px-7.5 py-2.5 text-green_2"
+              @click="isDate = !isDate"
+            >
+              {{ defaultData }}
+            </div>
+            <div
+              v-show="isDate"
+              class="absolute top-full z-50 translate-y-2.5"
+            >
+              <VDatePicker v-model="date" />
+            </div>
+          </div>
         </div>
 
         <input
           type="text"
-          placeholder="你想吃什麼？請輸入關鍵字"
+          placeholder="想找有趣的？請輸入關鍵字"
           class="h-12.5 w-full rounded-md border border-gray_4 bg-gray_2 px-7.5 py-2.5 outline-green_2 lg:flex-1"
         />
         <button

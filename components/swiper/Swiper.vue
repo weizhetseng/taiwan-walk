@@ -39,7 +39,7 @@ onMounted(() => {
     </div>
     <div class="pagination"></div>
     <div
-      class="absolute left-0 top-1/2 z-10 hidden w-full -translate-y-1/2 justify-between px-7.5 md:flex"
+      class="absolute left-0 top-1/2 z-50 hidden w-full -translate-y-1/2 justify-between px-7.5 md:flex"
     >
       <div
         class="prevBtn flex h-10 w-10 cursor-pointer items-center justify-center rounded-full border-2 border-white"

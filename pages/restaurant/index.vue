@@ -15,18 +15,18 @@ function handleSelect(title: string, value: string) {
 
 const dropDownRef = ref<HTMLElement | null>(null)
 
-function test(event: Event) {
+function closeDorpDown(event: Event) {
   if (dropDownRef.value && !dropDownRef.value.contains(event.target as Node)) {
     isSelect.value = false
   }
 }
 
 onMounted(() => {
-  document.addEventListener('click', test)
+  document.addEventListener('click', closeDorpDown)
 })
 
 onBeforeUnmount(() => {
-  document.removeEventListener('click', test)
+  document.removeEventListener('click', closeDorpDown)
 })
 </script>
 <template>

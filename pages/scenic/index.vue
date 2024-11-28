@@ -12,6 +12,22 @@ function handleSelect(title: string, value: string) {
   selected.value = { title, value }
   isSelect.value = !isSelect.value
 }
+
+const dropDownRef = ref<HTMLElement | null>(null)
+
+function closeDorpDown(event: Event) {
+  if (dropDownRef.value && !dropDownRef.value.contains(event.target as Node)) {
+    isSelect.value = false
+  }
+}
+
+onMounted(() => {
+  document.addEventListener('click', closeDorpDown)
+})
+
+onBeforeUnmount(() => {
+  document.removeEventListener('click', closeDorpDown)
+})
 </script>
 <template>
   <main class="pb-15 pt-6 md:pb-30 md:pt-15">
@@ -25,7 +41,10 @@ function handleSelect(title: string, value: string) {
         action=""
         class="mb-6 flex flex-col gap-4 md:mb-15 lg:flex-row"
       >
-        <div class="relative">
+        <div
+          ref="dropDownRef"
+          class="relative"
+        >
           <div
             class="h-12.5 w-full cursor-pointer appearance-none rounded-md border border-gray_4 px-7.5 py-2.5 text-green_2 outline-green_2 lg:w-60"
             @click="isSelect = !isSelect"
@@ -34,7 +53,7 @@ function handleSelect(title: string, value: string) {
           </div>
           <ul
             v-show="isSelect"
-            class="absolute top-full max-h-[350px] w-full translate-y-2.5 overflow-auto rounded-md border border-gray_4 bg-white pb-5 pr-5"
+            class="absolute top-full z-50 max-h-[350px] w-full translate-y-2.5 overflow-auto rounded-md border border-gray_4 bg-white pb-5 pr-5"
           >
             <li
               v-for="country in countrys"
@@ -50,7 +69,7 @@ function handleSelect(title: string, value: string) {
 
         <input
           type="text"
-          placeholder="你想吃什麼？請輸入關鍵字"
+          placeholder="你想去哪裡？請輸入關鍵字"
           class="h-12.5 w-full rounded-md border border-gray_4 bg-gray_2 px-7.5 py-2.5 outline-green_2 lg:flex-1"
         />
         <button
@@ -69,7 +88,7 @@ function handleSelect(title: string, value: string) {
         <ul class="-mx-2 flex flex-wrap gap-y-3 sm:-mx-4">
           <li class="w-1/2 px-2 sm:w-1/3 sm:px-4 lg:w-1/4">
             <div
-              class="relative after:absolute after:left-0 after:top-0 after:z-10 after:h-full after:w-full after:rounded-3xl after:bg-black_1 after:content-['']"
+              class="relative cursor-pointer after:absolute after:left-0 after:top-0 after:z-10 after:h-full after:w-full after:rounded-3xl after:bg-black_1 after:content-['']"
             >
               <img
                 src="@/assets/image/restaurant6.jpeg"
@@ -79,13 +98,13 @@ function handleSelect(title: string, value: string) {
               <p
                 class="absolute left-1/2 top-1/2 z-20 w-full -translate-x-1/2 -translate-y-1/2 text-center text-base font-bold text-white sm:text-lg lg:text-2xl"
               >
-                自然風景類
+                地方特產
               </p>
             </div>
           </li>
           <li class="w-1/2 px-2 sm:w-1/3 sm:px-4 lg:w-1/4">
             <div
-              class="relative after:absolute after:left-0 after:top-0 after:z-10 after:h-full after:w-full after:rounded-3xl after:bg-black_1 after:content-['']"
+              class="relative cursor-pointer after:absolute after:left-0 after:top-0 after:z-10 after:h-full after:w-full after:rounded-3xl after:bg-black_1 after:content-['']"
             >
               <img
                 src="@/assets/image/restaurant5.jpeg"
@@ -95,13 +114,13 @@ function handleSelect(title: string, value: string) {
               <p
                 class="absolute left-1/2 top-1/2 z-20 w-full -translate-x-1/2 -translate-y-1/2 text-center text-base font-bold text-white sm:text-lg lg:text-2xl"
               >
-                觀光工廠類
+                中式美食
               </p>
             </div>
           </li>
           <li class="w-1/2 px-2 sm:w-1/3 sm:px-4 lg:w-1/4">
             <div
-              class="relative after:absolute after:left-0 after:top-0 after:z-10 after:h-full after:w-full after:rounded-3xl after:bg-black_1 after:content-['']"
+              class="relative cursor-pointer after:absolute after:left-0 after:top-0 after:z-10 after:h-full after:w-full after:rounded-3xl after:bg-black_1 after:content-['']"
             >
               <img
                 src="@/assets/image/restaurant4.jpeg"
@@ -111,13 +130,13 @@ function handleSelect(title: string, value: string) {
               <p
                 class="absolute left-1/2 top-1/2 z-20 w-full -translate-x-1/2 -translate-y-1/2 text-center text-base font-bold text-white sm:text-lg lg:text-2xl"
               >
-                遊憩類
+                甜點冰品
               </p>
             </div>
           </li>
           <li class="w-1/2 px-2 sm:w-1/3 sm:px-4 lg:w-1/4">
             <div
-              class="relative after:absolute after:left-0 after:top-0 after:z-10 after:h-full after:w-full after:rounded-3xl after:bg-black_1 after:content-['']"
+              class="relative cursor-pointer after:absolute after:left-0 after:top-0 after:z-10 after:h-full after:w-full after:rounded-3xl after:bg-black_1 after:content-['']"
             >
               <img
                 src="@/assets/image/restaurant3.jpeg"
@@ -127,13 +146,13 @@ function handleSelect(title: string, value: string) {
               <p
                 class="absolute left-1/2 top-1/2 z-20 w-full -translate-x-1/2 -translate-y-1/2 text-center text-base font-bold text-white sm:text-lg lg:text-2xl"
               >
-                休閒農業類
+                異國料理
               </p>
             </div>
           </li>
           <li class="w-1/2 px-2 sm:w-1/3 sm:px-4 lg:w-1/4">
             <div
-              class="relative after:absolute after:left-0 after:top-0 after:z-10 after:h-full after:w-full after:rounded-3xl after:bg-black_1 after:content-['']"
+              class="relative cursor-pointer after:absolute after:left-0 after:top-0 after:z-10 after:h-full after:w-full after:rounded-3xl after:bg-black_1 after:content-['']"
             >
               <img
                 src="@/assets/image/restaurant2.jpeg"
@@ -143,13 +162,13 @@ function handleSelect(title: string, value: string) {
               <p
                 class="absolute left-1/2 top-1/2 z-20 w-full -translate-x-1/2 -translate-y-1/2 text-center text-base font-bold text-white sm:text-lg lg:text-2xl"
               >
-                生態類
+                伴手禮
               </p>
             </div>
           </li>
           <li class="w-1/2 px-2 sm:w-1/3 sm:px-4 lg:w-1/4">
             <div
-              class="relative after:absolute after:left-0 after:top-0 after:z-10 after:h-full after:w-full after:rounded-3xl after:bg-black_1 after:content-['']"
+              class="relative cursor-pointer after:absolute after:left-0 after:top-0 after:z-10 after:h-full after:w-full after:rounded-3xl after:bg-black_1 after:content-['']"
             >
               <img
                 src="@/assets/image/restaurant1.jpeg"
@@ -159,23 +178,7 @@ function handleSelect(title: string, value: string) {
               <p
                 class="absolute left-1/2 top-1/2 z-20 w-full -translate-x-1/2 -translate-y-1/2 text-center text-base font-bold text-white sm:text-lg lg:text-2xl"
               >
-                溫泉類
-              </p>
-            </div>
-          </li>
-          <li class="w-1/2 px-2 sm:w-1/3 sm:px-4 lg:w-1/4">
-            <div
-              class="relative after:absolute after:left-0 after:top-0 after:z-10 after:h-full after:w-full after:rounded-3xl after:bg-black_1 after:content-['']"
-            >
-              <img
-                src="@/assets/image/restaurant1.jpeg"
-                alt=""
-                class="h-20 w-full rounded-3xl object-cover sm:h-30 lg:h-40"
-              />
-              <p
-                class="absolute left-1/2 top-1/2 z-20 w-full -translate-x-1/2 -translate-y-1/2 text-center text-base font-bold text-white sm:text-lg lg:text-2xl"
-              >
-                古蹟類
+                素食
               </p>
             </div>
           </li>

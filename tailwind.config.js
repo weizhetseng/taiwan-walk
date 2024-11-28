@@ -23,6 +23,7 @@ module.exports = {
         39: '156px',
         50: '200px',
         55: '220px',
+        87.5: '350px',
         100: '400px'
       },
       colors: {
@@ -31,11 +32,16 @@ module.exports = {
         green_2: '#7F977B',
         green_3: '#6E7D60',
         green_4: '#A8B8A5',
+        green_5: '#E0DA48',
         gray_1: '#E5E5E5',
         gray_2: '#F9F9F9',
         gray_3: '#646464',
         gray_4: '#E6E6E6',
         black_1: 'rgba(0,0,0,0.4)'
+      },
+      backgroundImage: {
+        selectArrow: "url('../image/arrowD.svg')",
+        datepicker: "url('../image/datepicker.svg')"
       }
     }
   },

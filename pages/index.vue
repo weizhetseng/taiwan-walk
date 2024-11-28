@@ -5,7 +5,8 @@ import scenics from '@/data/scenic.json'
 </script>
 
 <template>
-  <main class="pb-15 pt-20 lg:pb-30">
+  <main class="pb-15 pt-2 md:pb-30 md:pt-10 lg:pt-20">
+    <HomeSearch />
     <HomeBanner :scenics="scenics" />
     <HomeActive :actives="actives" />
     <HomeScenics :scenics="scenics" />
